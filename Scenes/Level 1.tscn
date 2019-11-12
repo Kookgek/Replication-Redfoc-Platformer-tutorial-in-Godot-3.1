@@ -1,0 +1,355 @@
+[gd_scene load_steps=35 format=2]
+
+[ext_resource path="res://Scripts/GameManager.gd" type="Script" id=1]
+[ext_resource path="res://Fonts/Cartoon_Regular.ttf" type="DynamicFontData" id=2]
+[ext_resource path="res://Images/Gems.png" type="Texture" id=3]
+[ext_resource path="res://Fonts/Mozzarella.ttf" type="DynamicFontData" id=4]
+[ext_resource path="res://Scripts/GemLabel.gd" type="Script" id=5]
+[ext_resource path="res://Images/hudHeart_full.png" type="Texture" id=6]
+[ext_resource path="res://Scripts/HeartLabel.gd" type="Script" id=7]
+[ext_resource path="res://Background PNG/set3_background.png" type="Texture" id=8]
+[ext_resource path="res://Background PNG/set3_tiles.png" type="Texture" id=9]
+[ext_resource path="res://Background PNG/set3_hills.png" type="Texture" id=10]
+[ext_resource path="res://Resources/Tiles.tres" type="TileSet" id=11]
+[ext_resource path="res://Green Tiles/tileGreen_03.png" type="Texture" id=12]
+[ext_resource path="res://Scripts/Player.gd" type="Script" id=13]
+[ext_resource path="res://Images/playerRed_stand.png" type="Texture" id=14]
+[ext_resource path="res://Images/playerRed_walk1.png" type="Texture" id=15]
+[ext_resource path="res://Images/playerRed_walk2.png" type="Texture" id=16]
+[ext_resource path="res://Images/playerRed_walk3.png" type="Texture" id=17]
+[ext_resource path="res://Images/playerRed_dead.png" type="Texture" id=18]
+[ext_resource path="res://Images/playerRed_up2.png" type="Texture" id=19]
+[ext_resource path="res://Images/playerRed_fall.png" type="Texture" id=20]
+[ext_resource path="res://Scenes/EnemyFloating.tscn" type="PackedScene" id=21]
+[ext_resource path="res://Scenes/EnemyFlying.tscn" type="PackedScene" id=22]
+[ext_resource path="res://Scenes/enemyWalk.tscn" type="PackedScene" id=23]
+[ext_resource path="res://Scenes/EnemyFish.tscn" type="PackedScene" id=24]
+[ext_resource path="res://Scenes/blueGem.tscn" type="PackedScene" id=25]
+
+[sub_resource type="DynamicFont" id=1]
+size = 70
+font_data = ExtResource( 2 )
+
+[sub_resource type="DynamicFont" id=2]
+size = 50
+outline_size = 2
+outline_color = Color( 0, 0, 0, 1 )
+font_data = ExtResource( 4 )
+
+[sub_resource type="VisualShaderNodeColorConstant" id=3]
+
+[sub_resource type="VisualShader" id=4]
+code = "shader_type canvas_item;
+
+
+
+void vertex() {
+// Output:0
+
+}
+
+void fragment() {
+// Output:0
+
+}
+
+void light() {
+// Output:0
+
+}
+"
+mode = 1
+flags/light_only = false
+nodes/fragment/0/position = Vector2( 380, 80 )
+nodes/fragment/2/node = SubResource( 3 )
+nodes/fragment/2/position = Vector2( 831.5, 150 )
+
+[sub_resource type="ShaderMaterial" id=5]
+shader = SubResource( 4 )
+
+[sub_resource type="ShaderMaterial" id=6]
+
+[sub_resource type="SpriteFrames" id=7]
+animations = [ {
+"frames": [ ExtResource( 14 ) ],
+"loop": true,
+"name": "Idle",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 15 ), ExtResource( 16 ), ExtResource( 17 ) ],
+"loop": true,
+"name": "Run",
+"speed": 8.0
+}, {
+"frames": [ ExtResource( 18 ) ],
+"loop": true,
+"name": "Dead",
+"speed": 0.0
+}, {
+"frames": [ ExtResource( 19 ) ],
+"loop": true,
+"name": "Jump",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 20 ) ],
+"loop": true,
+"name": "Fall",
+"speed": 5.0
+} ]
+
+[sub_resource type="CapsuleShape2D" id=8]
+radius = 19.3217
+height = 10.1188
+
+[sub_resource type="Animation" id=9]
+step = 0.2
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.2, 0.4, 0.6, 0.8 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ) ]
+}
+
+[node name="Main" type="Node2D"]
+
+[node name="HUD" type="CanvasLayer" parent="."]
+
+[node name="HUD" type="Control" parent="HUD"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 1 )
+
+[node name="Label" type="Label" parent="HUD/HUD"]
+margin_left = 320.0
+margin_top = 160.0
+margin_right = 819.0
+margin_bottom = 327.0
+custom_fonts/font = SubResource( 1 )
+custom_colors/font_color = Color( 0.172549, 0.329412, 0.376471, 1 )
+text = "Try Again!"
+align = 1
+valign = 1
+
+[node name="StatsHud" type="HBoxContainer" parent="HUD/HUD"]
+margin_left = 21.0
+margin_top = 20.0
+margin_right = 237.0
+margin_bottom = 86.0
+
+[node name="GemIcon" type="TextureRect" parent="HUD/HUD/StatsHud"]
+margin_right = 62.0
+margin_bottom = 66.0
+size_flags_horizontal = 5
+texture = ExtResource( 3 )
+
+[node name="GemLabel" type="Label" parent="HUD/HUD/StatsHud"]
+margin_left = 66.0
+margin_right = 106.0
+margin_bottom = 66.0
+size_flags_horizontal = 7
+custom_fonts/font = SubResource( 2 )
+text = "0"
+align = 1
+script = ExtResource( 5 )
+
+[node name="HeartIcon" type="TextureRect" parent="HUD/HUD/StatsHud"]
+margin_left = 110.0
+margin_right = 171.0
+margin_bottom = 66.0
+size_flags_horizontal = 7
+texture = ExtResource( 6 )
+
+[node name="HeartLabel" type="Label" parent="HUD/HUD/StatsHud"]
+margin_left = 175.0
+margin_right = 216.0
+margin_bottom = 66.0
+size_flags_horizontal = 7
+custom_fonts/font = SubResource( 2 )
+text = "0"
+align = 1
+script = ExtResource( 7 )
+
+[node name="Timer" type="Timer" parent="HUD/HUD/StatsHud/HeartLabel"]
+wait_time = 3.0
+one_shot = true
+
+[node name="Background" type="ParallaxBackground" parent="."]
+scroll_base_scale = Vector2( 0, 0 )
+
+[node name="ParallaxLayer" type="ParallaxLayer" parent="Background"]
+motion_mirroring = Vector2( 1136, 0 )
+
+[node name="canvas" type="Sprite" parent="Background/ParallaxLayer"]
+position = Vector2( 1, 0 )
+scale = Vector2( 1.00527, 1 )
+texture = ExtResource( 8 )
+centered = false
+
+[node name="set3_tiles" type="Sprite" parent="Background/ParallaxLayer"]
+position = Vector2( 569, 450.09 )
+texture = ExtResource( 9 )
+
+[node name="set3_hills" type="Sprite" parent="Background/ParallaxLayer"]
+position = Vector2( 592, 464 )
+texture = ExtResource( 10 )
+
+[node name="Ground" type="Node2D" parent="."]
+editor/display_folded = true
+
+[node name="TileMap" type="TileMap" parent="Ground"]
+tile_set = ExtResource( 11 )
+cell_size = Vector2( 32, 32 )
+collision_use_kinematic = true
+collision_layer = 3
+collision_mask = 0
+format = 1
+tile_data = PoolIntArray( 655373, 0, 0, 655375, 1, 0, 720945, 17, 0, 720947, 18, 0, 720972, 17, 0, 720974, 18, 0, 786496, 12, 0, 786498, 6, 0, 786500, 6, 0, 786502, 6, 0, 786504, 7, 0, 851976, 0, 0, 851978, 1, 0, 851985, 5, 0, 851987, 7, 0, 852011, 16, 0, 852013, 18, 0, 917537, 8, 0, 917560, 5, 0, 917562, 6, 0, 917564, 6, 0, 917566, 6, 0, 917568, 20, 0, 983060, 5, 0, 983062, 6, 0, 983064, 6, 0, 983066, 6, 0, 983068, 6, 0, 983070, 6, 0, 983071, 6, 0, 983075, 6, 0, 983077, 6, 0, 983079, 7, 0, 1048576, 6, 0, 1048578, 6, 0, 1048580, 6, 0, 1048582, 6, 0, 1048584, 6, 0, 1048586, 6, 0, 1048588, 6, 0, 1048590, 6, 0, 1048592, 7, 0, 1179648, 4, 0, 1179649, 4, 0, 1179650, 4, 0, 1179651, 4, 0, 1179652, 4, 0, 1179653, 4, 0, 1179654, 4, 0, 1179655, 4, 0, 1179656, 4, 0, 1179657, 4, 0, 1179658, 4, 0, 1179659, 4, 0, 1179660, 4, 0, 1179661, 4, 0, 1179662, 4, 0, 1179663, 4, 0, 1179664, 4, 0, 1179665, 4, 0 )
+
+[node name="tileGreen_03" type="Sprite" parent="Ground/TileMap"]
+position = Vector2( 608, 560.062 )
+scale = Vector2( 2, 2.50193 )
+z_index = -1
+texture = ExtResource( 12 )
+
+[node name="tileGreen_04" type="Sprite" parent="Ground/TileMap"]
+position = Vector2( 977.432, 571.704 )
+scale = Vector2( 10.4553, 2.25096 )
+z_index = -1
+texture = ExtResource( 12 )
+
+[node name="tileGreen_05" type="Sprite" parent="Ground/TileMap"]
+position = Vector2( 1952, 576 )
+scale = Vector2( 5, 2.25096 )
+z_index = -1
+texture = ExtResource( 12 )
+
+[node name="tileGreen_06" type="Sprite" parent="Ground/TileMap"]
+position = Vector2( 2240, 532.091 )
+scale = Vector2( 4, 3.6231 )
+z_index = -1
+texture = ExtResource( 12 )
+
+[node name="Player" type="KinematicBody2D" parent="."]
+material = SubResource( 5 )
+position = Vector2( 74.0378, 488.604 )
+z_index = 1
+collision_layer = 0
+collision_mask = 2
+script = ExtResource( 13 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="Sprite" type="AnimatedSprite" parent="Player"]
+material = SubResource( 6 )
+frames = SubResource( 7 )
+animation = "Dead"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Player"]
+position = Vector2( 0.598297, -0.231934 )
+shape = SubResource( 8 )
+
+[node name="Camera2D" type="Camera2D" parent="Player"]
+position = Vector2( 0.115982, -0.115967 )
+current = true
+limit_left = 0
+limit_top = 0
+limit_bottom = 620
+limit_smoothed = true
+smoothing_enabled = true
+offset_v = -1.0
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Player"]
+anims/enemy = SubResource( 9 )
+
+[node name="VisibilityNotifier2D" type="VisibilityNotifier2D" parent="Player"]
+
+[node name="Enemies" type="Node2D" parent="."]
+editor/display_folded = true
+
+[node name="EnemyFloating2" parent="Enemies" instance=ExtResource( 21 )]
+position = Vector2( 1888, 428 )
+
+[node name="EnemyFloating" parent="Enemies" instance=ExtResource( 21 )]
+position = Vector2( 319.603, 397.108 )
+
+[node name="EnemyFlying" parent="Enemies" instance=ExtResource( 22 )]
+position = Vector2( 659.408, 300.355 )
+input_pickable = false
+
+[node name="EnemyFlying2" parent="Enemies" instance=ExtResource( 22 )]
+position = Vector2( 1504, 300.355 )
+input_pickable = false
+
+[node name="EnemyWalk" parent="Enemies" instance=ExtResource( 23 )]
+position = Vector2( 872.099, 460 )
+
+[node name="EnemyFish" parent="Enemies" instance=ExtResource( 24 )]
+position = Vector2( 2496.18, 329.355 )
+
+[node name="Collectibles" type="Node2D" parent="."]
+
+[node name="Gems" type="Node2D" parent="Collectibles"]
+
+[node name="blueGem" parent="Collectibles/Gems" instance=ExtResource( 25 )]
+
+[node name="blueGem4" parent="Collectibles/Gems" instance=ExtResource( 25 )]
+position = Vector2( 784, 448 )
+
+[node name="blueGem7" parent="Collectibles/Gems" instance=ExtResource( 25 )]
+position = Vector2( 1504, 363 )
+
+[node name="blueGem2" parent="Collectibles/Gems" instance=ExtResource( 25 )]
+position = Vector2( 512, 288 )
+
+[node name="blueGem6" parent="Collectibles/Gems" instance=ExtResource( 25 )]
+position = Vector2( 816, 448 )
+
+[node name="blueGem8" parent="Collectibles/Gems" instance=ExtResource( 25 )]
+position = Vector2( 1536, 339.355 )
+
+[node name="blueGem10" parent="Collectibles/Gems" instance=ExtResource( 25 )]
+position = Vector2( 2176, 356.841 )
+
+[node name="blueGem3" parent="Collectibles/Gems" instance=ExtResource( 25 )]
+position = Vector2( 448, 288 )
+
+[node name="blueGem5" parent="Collectibles/Gems" instance=ExtResource( 25 )]
+position = Vector2( 752, 448 )
+
+[node name="blueGem9" parent="Collectibles/Gems" instance=ExtResource( 25 )]
+position = Vector2( 1472, 384 )
+
+[node name="blueGem11" parent="Collectibles/Gems" instance=ExtResource( 25 )]
+position = Vector2( 2144, 356.841 )
+[connection signal="timeout" from="HUD/HUD/StatsHud/HeartLabel/Timer" to="HUD/HUD/StatsHud/HeartLabel" method="_on_Timer_timeout"]
+[connection signal="screen_exited" from="Player/VisibilityNotifier2D" to="Player" method="_on_VisibilityNotifier2D_screen_exited"]
+[connection signal="body_entered" from="Enemies/EnemyFloating2" to="Enemies/EnemyFloating2" method="_on_body_entered"]
+[connection signal="heart_loss" from="Enemies/EnemyFloating2" to="HUD/HUD/StatsHud/HeartLabel" method="_on_Enemy_heart_loss"]
+[connection signal="body_entered" from="Enemies/EnemyFloating" to="Enemies/EnemyFloating" method="_on_body_entered"]
+[connection signal="heart_loss" from="Enemies/EnemyFloating" to="HUD/HUD/StatsHud/HeartLabel" method="_on_Enemy_heart_loss"]
+[connection signal="body_entered" from="Enemies/EnemyFlying" to="Enemies/EnemyFlying" method="_on_body_entered"]
+[connection signal="heart_loss" from="Enemies/EnemyFlying" to="HUD/HUD/StatsHud/HeartLabel" method="_on_Enemy_heart_loss"]
+[connection signal="body_entered" from="Enemies/EnemyFlying2" to="Enemies/EnemyFlying2" method="_on_body_entered"]
+[connection signal="heart_loss" from="Enemies/EnemyFlying2" to="HUD/HUD/StatsHud/HeartLabel" method="_on_Enemy_heart_loss"]
+[connection signal="body_entered" from="Enemies/EnemyWalk" to="Enemies/EnemyWalk" method="_on_body_entered"]
+[connection signal="heart_loss" from="Enemies/EnemyWalk" to="HUD/HUD/StatsHud/HeartLabel" method="_on_Enemy_heart_loss"]
+[connection signal="body_entered" from="Enemies/EnemyFish" to="Enemies/EnemyFish" method="_on_body_entered"]
+[connection signal="heart_loss" from="Enemies/EnemyFish" to="HUD/HUD/StatsHud/HeartLabel" method="_on_Enemy_heart_loss"]
+[connection signal="gem_grabbed" from="Collectibles/Gems/blueGem" to="HUD/HUD/StatsHud/GemLabel" method="_on_blueGem_gem_grabbed"]
+[connection signal="gem_grabbed" from="Collectibles/Gems/blueGem4" to="HUD/HUD/StatsHud/GemLabel" method="_on_blueGem_gem_grabbed"]
+[connection signal="gem_grabbed" from="Collectibles/Gems/blueGem7" to="HUD/HUD/StatsHud/GemLabel" method="_on_blueGem_gem_grabbed"]
+[connection signal="gem_grabbed" from="Collectibles/Gems/blueGem2" to="HUD/HUD/StatsHud/GemLabel" method="_on_blueGem_gem_grabbed"]
+[connection signal="gem_grabbed" from="Collectibles/Gems/blueGem6" to="HUD/HUD/StatsHud/GemLabel" method="_on_blueGem_gem_grabbed"]
+[connection signal="gem_grabbed" from="Collectibles/Gems/blueGem8" to="HUD/HUD/StatsHud/GemLabel" method="_on_blueGem_gem_grabbed"]
+[connection signal="gem_grabbed" from="Collectibles/Gems/blueGem10" to="HUD/HUD/StatsHud/GemLabel" method="_on_blueGem_gem_grabbed"]
+[connection signal="gem_grabbed" from="Collectibles/Gems/blueGem3" to="HUD/HUD/StatsHud/GemLabel" method="_on_blueGem_gem_grabbed"]
+[connection signal="gem_grabbed" from="Collectibles/Gems/blueGem5" to="HUD/HUD/StatsHud/GemLabel" method="_on_blueGem_gem_grabbed"]
+[connection signal="gem_grabbed" from="Collectibles/Gems/blueGem9" to="HUD/HUD/StatsHud/GemLabel" method="_on_blueGem_gem_grabbed"]
+[connection signal="gem_grabbed" from="Collectibles/Gems/blueGem11" to="HUD/HUD/StatsHud/GemLabel" method="_on_blueGem_gem_grabbed"]

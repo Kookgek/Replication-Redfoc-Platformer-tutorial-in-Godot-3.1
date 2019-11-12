@@ -1,0 +1,27 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://Scripts/blueGem.gd" type="Script" id=1]
+[ext_resource path="res://Images/blueGem.png" type="Texture" id=2]
+
+[sub_resource type="CircleShape2D" id=1]
+radius = 14.1399
+
+[node name="blueGem" type="Area2D"]
+position = Vector2( 480, 288 )
+collision_layer = 2
+collision_mask = 0
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="Sprite" type="Sprite" parent="."]
+texture = ExtResource( 2 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
+shape = SubResource( 1 )
+[connection signal="body_entered" from="." to="." method="_on_blueGem_body_entered"]

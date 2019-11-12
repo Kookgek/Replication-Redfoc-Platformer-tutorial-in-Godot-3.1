@@ -1,0 +1,109 @@
+[gd_scene load_steps=16 format=2]
+
+[ext_resource path="res://Player.gd" type="Script" id=1]
+[ext_resource path="res://playerRed_stand.png" type="Texture" id=2]
+[ext_resource path="res://playerRed_walk1.png" type="Texture" id=3]
+[ext_resource path="res://playerRed_walk2.png" type="Texture" id=4]
+[ext_resource path="res://playerRed_walk3.png" type="Texture" id=5]
+[ext_resource path="res://playerRed_fall.png" type="Texture" id=6]
+[ext_resource path="res://playerRed_up2.png" type="Texture" id=7]
+[ext_resource path="res://playerRed_dead.png" type="Texture" id=8]
+
+[sub_resource type="VisualShaderNodeColorConstant" id=8]
+
+[sub_resource type="VisualShader" id=2]
+code = "shader_type canvas_item;
+
+
+
+void vertex() {
+// Output:0
+
+}
+
+void fragment() {
+// Output:0
+
+}
+
+void light() {
+// Output:0
+
+}
+"
+mode = 1
+flags/light_only = false
+nodes/fragment/0/position = Vector2( 380, 80 )
+nodes/fragment/2/node = SubResource( 8 )
+nodes/fragment/2/position = Vector2( 831.5, 150 )
+
+[sub_resource type="ShaderMaterial" id=3]
+shader = SubResource( 2 )
+
+[sub_resource type="ShaderMaterial" id=4]
+
+[sub_resource type="SpriteFrames" id=5]
+animations = [ {
+"frames": [ ExtResource( 2 ) ],
+"loop": true,
+"name": "Idle",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 3 ), ExtResource( 4 ), ExtResource( 5 ) ],
+"loop": true,
+"name": "Run",
+"speed": 8.0
+}, {
+"frames": [ ExtResource( 6 ) ],
+"loop": true,
+"name": "Fall",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 7 ) ],
+"loop": true,
+"name": "Jump",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 8 ) ],
+"loop": true,
+"name": "Dead",
+"speed": 5.0
+} ]
+
+[sub_resource type="CapsuleShape2D" id=6]
+radius = 19.3217
+height = 10.1188
+
+[sub_resource type="Animation" id=7]
+resource_name = "enemy"
+step = 0.2
+
+[node name="Player" type="KinematicBody2D"]
+material = SubResource( 3 )
+position = Vector2( 162.992, 416.753 )
+z_index = 1
+collision_layer = 0
+collision_mask = 2
+script = ExtResource( 1 )
+
+[node name="Sprite" type="AnimatedSprite" parent="."]
+material = SubResource( 4 )
+frames = SubResource( 5 )
+animation = "Dead"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2( 0.598297, -0.231934 )
+shape = SubResource( 6 )
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2( 0.115982, -0.115967 )
+current = true
+limit_left = 0
+limit_top = 0
+limit_bottom = 620
+limit_smoothed = true
+smoothing_enabled = true
+offset_v = -1.0
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+anims/enemy = SubResource( 7 )
